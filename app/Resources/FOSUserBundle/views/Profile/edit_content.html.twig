@@ -1,0 +1,114 @@
+{% extends '::base.html.twig' %}
+{% block _body %}  <h2>Usuarios</h2> {% endblock %}
+{% trans_default_domain 'FOSUserBundle' %}
+{% block body %}
+    <h2>Registro</h2>
+    <br>
+
+    {% if app.request.hasPreviousSession %}
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="flash-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <br>
+    <form action="{{ path('fos_user_profile_edit') }}" method="POST" class="form-horizontal">
+        {{ form_errors(form) }}
+
+        <div class="form-group">       
+            {{ form_label(form.datos.nombres) }}
+            {{ form_errors(form.datos.nombres) }}
+            <div class="col-lg-4">
+                {{ form_widget(form.datos.nombres) }}
+            </div>
+        </div>
+
+        <div class="form-group">       
+            {{ form_label(form.datos.apellidos) }}
+            {{ form_errors(form.datos.apellidos) }}
+            <div class="col-lg-4">
+                {{ form_widget(form.datos.apellidos) }}
+            </div>
+        </div>
+
+        <div class="form-group">       
+            {{ form_label(form.datos.cedula) }}
+            {{ form_errors(form.datos.cedula) }}
+            <div class="col-lg-4">
+                {{ form_widget(form.datos.cedula) }}
+            </div>
+        </div>
+
+        <div class="form-group {% if form.email.vars.errors[0].message is defined %} has-error{% endif %}">       
+            {{ form_label(form.email) }}
+            <div class="col-lg-4">
+                {{ form_widget(form.email) }}
+            </div>
+            {% if form.email.vars.errors[0].message is defined %}
+                <span class="help-block">
+                    {{ form.email.vars.errors[0].message }}
+                </span>
+            {% endif %}
+        </div>
+
+
+        <div class="form-group {% if form.username.vars.errors[0].message is defined %} has-error{% endif %}">       
+            {{ form_label(form.username) }}
+            <div class="col-lg-4">
+                {{ form_widget(form.username) }}
+            </div>
+            {% if form.username.vars.errors[0].message is defined %}
+                <span class="help-block">
+                    {{ form.username.vars.errors[0].message }}
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="form-group">       
+            {{ form_label(form.groups) }} 
+            {{ form_errors(form.groups) }}
+            <div class="col-lg-4">
+                {{ form_widget(form.groups) }}
+            </div>
+        </div>
+
+        <div class="form-group">       
+            {{ form_label(form.current_password) }} 
+            {{ form_errors(form.current_password) }}
+            <div class="col-lg-4">
+                {{ form_widget(form.current_password) }}
+            </div>
+        </div>
+
+        <div class="form-group">       
+            {{ form_label(form.plainPassword) }} 
+            {{ form_errors(form.plainPassword) }}
+            <div class="col-lg-4">
+                {{ form_widget(form.plainPassword) }}
+            </div>
+        </div>
+
+        </br>
+
+
+
+        <div class="form-group">
+            <div class="col-lg-offset-2 col-lg-4">
+                <button type="submit" value="{{ 'profile.edit.submit'|trans }}" class="btn btn-primary">Registrar</button>
+            </div>
+        </div>
+
+        {{form_rest(form)}}
+    </form>
+    <ul class="table">
+        <li>
+            <a href="{{ path('usuarios') }}">
+                Regresar a la lista
+            </a>
+        </li>
+
+    </ul>
+{% endblock %}

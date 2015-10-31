@@ -1,0 +1,133 @@
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username_email
+
+    role_hierarchy:        
+        ROLE_USER: ROLE_ENFERMERA
+        ROLE_ADMIN:  ROLE_USER
+        ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]
+        
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern: ^/
+            form_login:
+                provider: fos_userbundle
+                csrf_provider: security.csrf.token_manager 
+
+            logout:       true
+            anonymous:    true
+
+    access_control:
+      - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/, roles: ROLE_ENFERMERA }
+      - { path: ^/ajax, roles: ROLE_ENFERMERA }
+      - { path: ^/auditoria, roles: ROLE_ENFERMERA }      
+      - { path: ^/datos, roles: ROLE_ENFERMERA }      
+      - { path: ^/verificar, roles: ROLE_ENFERMERA }
+      - { path: ^/verificarone, roles: ROLE_ENFERMERA }
+      - { path: ^/confirmar, roles: ROLE_ENFERMERA }
+      - { path: ^/consultas, roles: ROLE_ENFERMERA}
+      - { path: ^/consultas/create, roles: ROLE_ENFERMERA }
+      - { path: ^/consultas/new, roles: ROLE_ENFERMERA }
+      - { path: ^/consultas/show, roles: ROLE_ENFERMERA }
+      - { path: ^/consultas/update, roles: ROLE_ENFERMERA }
+      - { path: ^/consultas/edit, roles: ROLE_ENFERMERA }
+      - { path: ^/ajaxmedicamentos, roles: ROLE_ENFERMERA }
+      - { path: ^/especialidades/create, roles: ROLE_ADMIN }
+      - { path: ^/especialidades/new, roles: ROLE_ADMIN }
+      - { path: ^/especialidades/show, roles: ROLE_ADMIN }
+      - { path: ^/especialidades/update, roles: ROLE_ADMIN }
+      - { path: ^/especialidades/edit, roles: ROLE_ADMIN }
+      - { path: ^/especialidades, roles: ROLE_ADMIN }
+      - { path: ^/insumos, roles: ROLE_ADMIN}
+      - { path: ^/insumos/create, roles: ROLE_ADMIN }
+      - { path: ^/insumos/new, roles: ROLE_ADMIN }
+      - { path: ^/insumos/show, roles: ROLE_ADMIN }
+      - { path: ^/insumos/update, roles: ROLE_ADMIN }
+      - { path: ^/insumos/edit, roles: ROLE_ADMIN }
+      - { path: ^/insumossuministrados, roles: ROLE_ADMIN}
+      - { path: ^/insumossuministrados/create, roles: ROLE_ADMIN }
+      - { path: ^/insumossuministrados/new, roles: ROLE_ADMIN }
+      - { path: ^/insumossuministrados/show, roles: ROLE_ADMIN }
+      - { path: ^/insumossuministrados/update, roles: ROLE_ADMIN }
+      - { path: ^/insumossuministrados/edit, roles: ROLE_ADMIN }
+      - { path: ^/insumossuministrados/delete, roles: ROLE_ADMIN }
+      - { path: ^/medicamentos, roles: ROLE_ADMIN}
+      - { path: ^/medicamentos/create, roles: ROLE_ADMIN }
+      - { path: ^/medicamentos/new, roles: ROLE_ADMIN }
+      - { path: ^/medicamentos/show, roles: ROLE_ADMIN }
+      - { path: ^/medicamentos/update, roles: ROLE_ADMIN }
+      - { path: ^/medicamentos/edit, roles: ROLE_ADMIN }
+      - { path: ^/medicamentossuministrados, roles: ROLE_ADMIN}
+      - { path: ^/medicamentossuministrados/create, roles: ROLE_ADMIN }
+      - { path: ^/medicamentossuministrados/new, roles: ROLE_ADMIN }
+      - { path: ^/medicamentossuministrados/show, roles: ROLE_ADMIN }
+      - { path: ^/medicamentossuministrados/update, roles: ROLE_ADMIN }
+      - { path: ^/medicamentossuministrados/edit, roles: ROLE_ADMIN }
+      - { path: ^/medicamentossuministrados/delete, roles: ROLE_ADMIN }
+      - { path: ^/observacionessuministradas, roles: ROLE_ADMIN}
+      - { path: ^/observacionessuministradas/create, roles: ROLE_ADMIN }
+      - { path: ^/observacionessuministradas/new, roles: ROLE_ADMIN }
+      - { path: ^/observacionessuministradas/show, roles: ROLE_ADMIN }
+      - { path: ^/observacionessuministradas/update, roles: ROLE_ADMIN }
+      - { path: ^/observacionessuministradas/edit, roles: ROLE_ADMIN }
+      - { path: ^/observacionessuministradas/delete, roles: ROLE_ADMIN }
+      - { path: ^/pacientes/list, roles: ROLE_ENFERMERA}
+      - { path: ^/pacientes/create, roles: ROLE_ENFERMERA }
+      - { path: ^/pacientes/new, roles: ROLE_ENFERMERA }
+      - { path: ^/pacientes/show, roles: ROLE_ENFERMERA }
+      - { path: ^/pacientes/update/, roles: ROLE_ADMIN }
+      - { path: ^/pacientes/edit/*, roles: ROLE_ADMIN }
+      - { path: ^/personal, roles: ROLE_ADMIN}
+      - { path: ^/personal/create, roles: ROLE_ADMIN }
+      - { path: ^/personal/new, roles: ROLE_ADMIN }
+      - { path: ^/personal/show, roles: ROLE_ADMIN }
+      - { path: ^/personal/update, roles: ROLE_ADMIN }
+      - { path: ^/personal/edit, roles: ROLE_ADMIN }
+      - { path: ^/pfg, roles: ROLE_ADMIN}
+      - { path: ^/pfg/create, roles: ROLE_ADMIN }
+      - { path: ^/pfg/new, roles: ROLE_ADMIN }
+      - { path: ^/pfg/show, roles: ROLE_ADMIN }
+      - { path: ^/pfg/update, roles: ROLE_ADMIN }
+      - { path: ^/pfg/edit, roles: ROLE_ADMIN }
+      - { path: ^/signosvitalessuministrados, roles: ROLE_ADMIN}
+      - { path: ^/signosvitalessuministrados/create, roles: ROLE_ADMIN }
+      - { path: ^/signosvitalessuministrados/new, roles: ROLE_ADMIN }
+      - { path: ^/signosvitalessuministrados/show, roles: ROLE_ADMIN }
+      - { path: ^/signosvitalessuministrados/update, roles: ROLE_ADMIN }
+      - { path: ^/signosvitalessuministrados/edit, roles: ROLE_ADMIN }
+      - { path: ^/signosvitalessuministrados/delete, roles: ROLE_ADMIN }
+      - { path: ^/tiposinsumo, roles: ROLE_ADMIN}
+      - { path: ^/tiposinsumo/create, roles: ROLE_ADMIN }
+      - { path: ^/tiposinsumo/new, roles: ROLE_ADMIN }
+      - { path: ^/tiposinsumo/show, roles: ROLE_ADMIN }
+      - { path: ^/tiposinsumo/update, roles: ROLE_ADMIN }
+      - { path: ^/tiposinsumo/edit, roles: ROLE_ADMIN }
+      - { path: ^/tiposmedicamento, roles: ROLE_ADMIN}
+      - { path: ^/tiposmedicamento/create, roles: ROLE_ADMIN }
+      - { path: ^/tiposmedicamento/new, roles: ROLE_ADMIN }
+      - { path: ^/tiposmedicamento/show, roles: ROLE_ADMIN }
+      - { path: ^/tiposmedicamento/update, roles: ROLE_ADMIN }
+      - { path: ^/tiposmedicamento/edit, roles: ROLE_ADMIN }
+      - { path: ^/roles, roles: ROLE_SUPER_ADMIN}
+      - { path: ^/roles/create, roles: ROLE_SUPER_ADMIN }
+      - { path: ^/roles/new, roles: ROLE_SUPER_ADMIN }
+      - { path: ^/roles/show, roles: ROLE_SUPER_ADMIN }
+      - { path: ^/roles/update, roles: ROLE_SUPER_ADMIN }
+      - { path: ^/roles/edit, roles: ROLE_SUPER_ADMIN }
+      - { path: ^/usuarios, roles: ROLE_SUPER_ADMIN}
+      - { path: ^/usuarios/create, roles: ROLE_SUPER_ADMIN }
+      - { path: ^/usuarios/new, roles: ROLE_SUPER_ADMIN }
+      - { path: ^/usuarios/show, roles: ROLE_SUPER_ADMIN }
+      - { path: ^/usuarios/update, roles: ROLE_SUPER_ADMIN }
+      - { path: ^/usuarios/edit, roles: ROLE_SUPER_ADMIN }

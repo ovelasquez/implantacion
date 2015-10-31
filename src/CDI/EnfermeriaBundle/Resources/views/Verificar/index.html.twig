@@ -1,0 +1,72 @@
+{% extends '::base.html.twig' %}
+{% if is_granted('ROLE_ENFERMERA') %}
+    {% block _body %}  <h2><b>UBV</b> - Centro de Diagnóstico Integral</h2>         
+    {% endblock %}
+
+    {% block body %}
+        <div class="col-lg-6 col-lg-offset-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading"> <label for="cedula">Datos del Paciente</label></div>
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form" action="{{ path('verificarone') }}" method="post">
+
+                                <div class="form-group">
+                                    <label for="cedula">Cédula de Identidad</label>
+                                    <input maxlength="9" id="cedula" class="form-control" type="number" placeholder="Indique número de Cédula de Identidad" required="required" name="cedula">
+                                </div>                                
+                                <button type="submit" class="btn btn-primary">Verificar</button>
+                            </form>
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+
+                    
+                    <!-- /.row -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>                           
+        <!-- /.col-lg-12 -->
+        {#
+        <div class="col-lg-3 col-xs-6">
+                        <!-- start rendering, block.id: 562d3eb315555 - page.id: no related page - name:  -->
+                        <!-- small box -->
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3>137</h3>
+                                <p>Consultas Activas</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-comments"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">
+                                View more <i class="fa fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+
+                        <!-- end rendering, block.id: 562d3eb315555 - page.id: no related page  - name:  -->
+
+                    </div>
+        #}
+
+
+    {% endblock %}
+{% endif %}
+
+{% block javascripts %}
+    {{parent()}}
+
+    <script>
+        function displayVals() {
+            var solonumero = $("#cedula").val();
+
+        }
+        $("select").change(displayVals);
+        $(document).ready(function () {
+        });
+    </script> 
+{% endblock %}

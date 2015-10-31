@@ -1,0 +1,102 @@
+{% extends '::base.html.twig' %}
+
+{% block _body %}  <h2>Usuarios</h2> {% endblock %}
+
+{% block body %}
+
+    <table class="table" id="dataTables-usuarios">
+        <thead>
+            <tr>
+
+                <th>#</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Cedula</th>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Estatus</th>                             
+                <th>Acciones</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="#">{{ loop.index }}</a></td>
+                    <td>{{ entity.datos.nombres | title  }}</td>
+                    <td>{{ entity.datos.apellidos | title }}</td>
+                    <td>{{ entity.datos.cedula | title }}</td>
+                    <td>{{ entity.username}}</td>
+                    <td>{{ entity.email}}</td>
+                    <td>{% if entity.enabled==1 %}{{ "Activo" }}{% else %}{{ "Inactivo" }}{% endif %}</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('fos_user_profile_show', { 'id': entity.id }) }}">Ver</a>
+                            </li>
+                           
+                                <li>
+                                    <a href="{{ path('fos_user_profile_edit', { 'id': entity.id }) }}">Editar</a>
+                                </li>
+                          
+                        </ul>
+                    </td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {#    <div class="paginacion" style="text-align: center"> {{ knp_pagination_render(pagination) }}</div>#}
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+        <ul>
+            <li>
+                <a href="{{ path('fos_user_registration_register') }}">
+                    Crear un nuevo Usuario
+                </a>
+            </li>
+        </ul>
+    {% endif %}
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+    <!-- DataTables JavaScript -->
+    <script src="{{ asset('bundles/enfermeria/js/jquery.dataTables.min.js') }}"></script> 
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#dataTables-usuarios').dataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar: ",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            }
+            );
+
+        });
+    </script>
+{% endblock %}
+

@@ -1,0 +1,50 @@
+{% extends '::base.html.twig' %}
+{% block _body %}
+    <h3>Centro de Diagnóstico Integral de la UBV</h3>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-3 col-md-4">
+            <div class="thumbnail azul1" style="min-height: 55px;">
+                <div class="glyphicon glyphicon glyphicon-ok" style='font-size: 100px; padding-left: 35%;'></div>
+                <div class="caption text-center" style="min-height: 150px;">
+                    <h4><b class="cBlanco">VERIFICAR</b></h4>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form class="col-lg-12" action="{{ path('verificarone') }}" method="post">          
+                                <div class="row">
+                                    <div class="col-lg-offset-1 col-lg-10">                                       
+                                        <input maxlength="9" id="cedula" class="form-control" type="text" placeholder="Cédula de Identidad" required="required" name="cedula">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-offset-4 col-lg-3">
+                                        <br>
+                                        <button class="btn btn-default" type="submit"> Consultar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+    <script>
+        function displayVals() {
+            var solonumero = $("#cedula").val();
+        }
+        $("select").change(displayVals);
+        $(document).ready(function () {
+            
+            $('#cedula').bind("cut copy paste", function (e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+{% endblock %}

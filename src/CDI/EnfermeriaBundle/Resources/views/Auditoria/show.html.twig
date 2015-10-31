@@ -1,0 +1,47 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Auditoria</h1>
+
+    <table class="table"">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{{ entity.fechaHora|date('d-m-Y H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Entidad</th>
+                <td>{{ entity.entidad }}</td>
+            </tr>
+            <tr>
+                <th>Id de la Entidad</th>
+                <td>{{ entity.entidadId }}</td>
+            </tr>
+            <tr>
+                <th>Accion</th>
+                <td>{{ entity.accion }}</td>
+            </tr>
+            {#<tr>
+                <th>Query</th>
+                <td>{{ entity.query }}</td>
+            </tr>#}
+            <tr>
+                <th>Ip</th>
+                <td>{{ entity.ip }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('auditoria') }}">
+            Regresar a lista
+        </a>
+    </li>
+</ul>
+{% endblock %}
+

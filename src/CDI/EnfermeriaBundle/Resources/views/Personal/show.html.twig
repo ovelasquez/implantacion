@@ -1,0 +1,68 @@
+{% extends '::base.html.twig' %}
+{% block _body %}  <h2>Personal</h2> {% endblock %}
+{% block body %}
+
+    <h2>Ver</h2>
+    <br>
+
+    <table class="table">
+        <tbody>
+            <tr hidden="">
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Apellidos</th>
+                <td>{{ entity.datos.apellidos | title }}</td>
+            </tr>
+
+            <tr>
+                <th>Nombres</th>
+                <td>{{ entity.datos.nombres | title }}</td>
+            </tr>
+
+            <tr>
+                <th>Cédula</th>
+                <td>{{ entity.datos.cedula }}</td>
+            </tr>
+
+            <tr>
+                <th>Procedencia</th>
+                <td>{{ entity.procedencia | title }}</td>
+            </tr>
+            <tr>
+                <th>Tipo</th>
+                <td>{{ entity.tipo | title }}</td>
+            </tr>
+            {% if entity.sas %}
+                <tr>
+                    <th>Sas</th>
+                    <td>{{ entity.sas }}</td>
+                </tr>
+            {% endif %}
+             {% if entity.especialidad %}
+                <tr>
+                    <th>Especialidad</th>
+                    <td>{{ entity.especialidad }}</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <ul class="table">
+        <li>
+            <a href="{{ path('personal') }}">
+                Regresar a la lista
+            </a>
+        </li>
+        {% if is_granted('ROLE_ADMIN') %}
+            <li>
+                <a href="{{ path('personal_edit', { 'id': entity.id }) }}">
+                    Editar
+                </a>
+            </li>
+        {% endif %}
+        <!--<li>{{ form(delete_form) }}</li>-->
+
+    </ul>
+{% endblock %}

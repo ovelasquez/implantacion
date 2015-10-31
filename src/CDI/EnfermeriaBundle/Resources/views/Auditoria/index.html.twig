@@ -1,0 +1,84 @@
+{% extends '::base.html.twig' %}
+{% block _body %}  <h2>Auditoria</h2> {% endblock %}
+
+{% block body %}
+    <br></br>
+
+    <table class="table" id="dataTables-auditoria">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Entidad</th>
+                <th>Id de la Entidad</th>
+                <th>Accion</th>
+{#                <th>Query</th>#}
+                <th>Ip</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('auditoria_show', { 'id': entity.id }) }}">{{ loop.index }}</a></td>
+                <td>{% if entity.fechaHora %}{{ entity.fechaHora|date('d-m-Y H:i:s') }}{% endif %}</td>
+                <td>{{ entity.entidad }}</td>
+                <td>{{ entity.entidadId }}</td>
+                <td>{{ entity.accion }}</td>
+                {#<td>{{ entity.query }}</td>#}
+                <td>{{ entity.ip }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('auditoria_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{#       <div class="paginacion-lg" style="text-align: center"> {{ knp_pagination_render(pagination) }}  </div>#}
+
+    {% endblock %}
+    
+   {% block javascripts %}
+    {{parent()}}
+    <!-- DataTables JavaScript -->
+    <script src="{{ asset('bundles/enfermeria/js/jquery.dataTables.min.js') }}"></script> 
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#dataTables-auditoria').dataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar: ",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            }
+            );
+
+        });
+    </script>
+{% endblock %}

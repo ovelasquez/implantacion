@@ -1,0 +1,179 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{parent()}}
+    <!-- Bootstrap datetimepicker core CSS -->    
+    <link rel="stylesheet" href="{{ asset('bundles/enfermeria/css/bootstrap-datetimepicker.min.css')}}"/>
+{% endblock %}
+
+{% block _body %}  <h2>Pacientes</h2> {% endblock %}
+{% block body %}
+
+    <h2>Registro </h2>
+    <br>
+
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+
+    <div class="form-group">       
+        {{ form_label(form.datos.nombres) }}
+        <div class="col-lg-4">
+            {{ form_widget(form.datos.nombres) }}
+            {{ form_errors(form.datos.nombres) }}
+        </div>
+    </div>
+
+    <div class="form-group">       
+        {{ form_label(form.datos.apellidos) }}
+        <div class="col-lg-4">
+            {{ form_widget(form.datos.apellidos) }}
+            {{ form_errors(form.datos.apellidos) }}
+        </div>
+    </div>
+
+
+    <div class="form-group">       
+        {{ form_label(form.datos.cedula) }}
+
+        <div class="col-lg-4">
+
+            {{ form_widget(form.datos.cedula) }}
+            {{ form_errors(form.datos.cedula) }}
+        </div>
+    </div>
+
+    <div class="form-group">       
+        {{ form_label(form.genero) }}
+        <div class="col-lg-4">
+            {{ form_widget(form.genero) }}
+            {{ form_errors(form.genero) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.fechaNacimiento) }}
+        {{ form_errors(form.fechaNacimiento) }}  
+        <div class="input-group date col-lg-4" id="cdi_enfermeriabundle_pacientes_fechaNacimiento">
+            {{ form_widget(form.fechaNacimiento) }}
+            <span class="input-group-addon">
+                <span class="glyphicon-calendar glyphicon"></span>
+            </span>
+        </div>       
+    </div>
+
+    <div class="form-group">       
+        {{ form_label(form.procedencia) }}
+        <div class="col-lg-4">
+            {{ form_widget(form.procedencia) }}
+            {{ form_errors(form.procedencia) }}
+        </div>
+    </div>
+
+
+    <div class="form-group">       
+        {{ form_label(form.tipo) }}
+        <div class="col-lg-4">
+            {{ form_widget(form.tipo) }}
+            {{ form_errors(form.tipo) }}
+        </div>
+    </div>
+
+
+
+    <div class="form-group">       
+        {{ form_label(form.pfg) }}
+        <div class="col-lg-4">
+            {{ form_widget(form.pfg) }}
+            {{ form_errors(form.pfg) }}
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-4">
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </div>
+    </div>
+
+
+    {{ form_end(form) }} 
+
+    <ul class="table">
+        <li>
+            <a href="{{ path('pacientes') }}">
+                Lista de Pacientes
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('verificar') }}">
+                Regresar
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script src="{{ asset('bundles/enfermeria/js/moment.min.js')}}"></script>
+    <script src="{{ asset('bundles/enfermeria/js/bootstrap-datetimepicker.js')}}"></script>
+    <script src="{{ asset('bundles/enfermeria/js/bootstrap-datetimepicker.es.js')}}"></script>
+
+    <script>
+
+        function displayVals() {
+            var procedencia = $("#cdi_enfermeriabundle_pacientes_procedencia").val();
+            var tipo = $("#cdi_enfermeriabundle_pacientes_tipo").val();
+            var pfg = $("#cdi_enfermeriabundle_pacientes_pfg").val();
+
+            if (procedencia == "interno") {
+                $(".tipo").css("display", "block"); // Mostrar el div tipo
+                $("#cdi_enfermeriabundle_pacientes_tipo").removeAttr("disabled"); //  Activo tipo                              
+            }
+            else {
+                $(".tipo").css("display", "none"); // Oculta el div tipo
+                $('#cdi_enfermeriabundle_pacientes_tipo').val(''); // el select de tipo lo inicializa
+                $("#cdi_enfermeriabundle_pacientes_tipo").prop('disabled', 'disabled'); // desabilita el select tipo
+
+                $(".pfg").css("display", "none"); // Oculta el div pfg
+                $('#cdi_enfermeriabundle_pacientes_pfg').val(''); // el select de pfg y lo inicializa
+                tipo = "";
+                $("#cdi_enfermeriabundle_pacientes_pfg").prop('disabled', 'disabled'); // desabilita el select pfg
+            }
+
+            if (tipo == "Estudiante") {
+                $(".pfg").css("display", "block"); // Mostrar el div pfg
+                $("#cdi_enfermeriabundle_pacientes_pfg").removeAttr("disabled"); //  Activo pfg                              
+            } else {
+                $(".pfg").css("display", "none"); // Oculta el div pfg
+                $('#cdi_enfermeriabundle_pacientes_pfg').val(''); // el select de pfg y lo inicializa
+                $("#cdi_enfermeriabundle_pacientes_pfg").prop('disabled', 'disabled'); // desabilita el select pfg
+
+            }
+        }
+
+        $("select").change(displayVals);
+
+        $(document).ready(function () {
+            $("#cdi_enfermeriabundle_pacientes_datos_cedula").val({{cedula}});
+            $('#cdi_enfermeriabundle_pacientes_datos_cedula').attr('readonly', true);
+            $("#cdi_enfermeriabundle_pacientes_tipo").parent().parent().wrapAll('<div class="tipo">');
+            $("#cdi_enfermeriabundle_pacientes_pfg").parent().parent().wrapAll('<div class="pfg">');
+            $(".tipo").css("display", "none"); // Oculta el div tipo
+            $(".pfg").css("display", "none"); // Oculta el div pfg   
+            $("#cdi_enfermeriabundle_pacientes_fechaRegistro").parent().css("display", "none"); // Oculta el div de fecha registro
+
+
+        });
+
+        $('#cdi_enfermeriabundle_pacientes_fechaNacimiento').datetimepicker({
+            pickTime: false,
+            language: 'es'
+        });
+
+
+    </script>
+
+{% endblock %}
+

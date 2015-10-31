@@ -1,0 +1,70 @@
+{% extends '::base.html.twig' %}
+{% block _body %}  <h2>Usuario</h2> {% endblock %}
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block body %}
+    <h2>Ver</h2>
+    <br>
+    {% if app.request.hasPreviousSession %}
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="flash-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    <br>  
+    <table class="table">
+        <tbody>
+            <tr hidden="">
+                <th>Id</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombres</th>
+                <td>{{ user.datos.nombres | title}}</td>
+            </tr>
+            <tr>
+                <th>Apellidos</th>
+                <td>{{ user.datos.apellidos | title}}</td>
+            </tr>
+            <tr>
+                <th>Cédula</th>
+                <td>{{ user.datos.cedula }}</td>
+            </tr>
+            <tr>
+                <th>Usuario</th>
+                <td>{{ user.username}}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email}}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                    {% if user.enabled %}
+                    <td>Activo</td>
+                {% else%}
+                    <td>Inactivo</td>
+                {% endif %}
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('usuarios') }}">
+                Regresar a la lista
+            </a>
+        </li>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <li>
+                <a href="{{ path('fos_user_profile_edit', { 'id': user.id }) }}">
+                    Editar
+                </a>
+            </li>
+        {% endif %}
+
+    </ul>
+{% endblock %}

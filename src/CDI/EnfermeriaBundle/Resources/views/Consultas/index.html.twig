@@ -1,0 +1,45 @@
+{% extends '::base.html.twig' %}
+{% block _body %}  <h2>Consultas</h2> {% endblock %}
+{% block body %}
+    <table id="consultas" class="table table-striped" >
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Paciente</th>
+                <th>Cédula</th>
+                <th>Procedencia</th>
+                <th>Charla?</th>               
+                <th>Egreso?</th>
+                <th>Fecha</th>
+                <th>Acciones</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for entity in pagination %}   
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ entity.paciente  | title }}</td>
+                    <td>{{ entity.paciente.datos.cedula | number_format(0,',','.') }}</td>               
+                    <td>{{ entity.paciente.procedencia | title }}</td>                
+                    <td>{% if entity.charla==1 %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>{% else %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>{% endif %}</td>                
+                    <td>{% if entity.egreso==1 %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>{% else %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>{% endif %}</td>
+                    <td>{% if entity.fecha %}{{ entity.fecha|date('d-m-Y H:i') }}{% endif %}</td>
+                    <td> <a href="{{ path('consultas_edit', { 'id': entity.id }) }}">  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="count"> Cantidad de Consultas registradas:  {{ pagination.getTotalItemCount }}  </div>
+    <div class="paginacion" style="text-align: center"> {{ knp_pagination_render(pagination) }}</div>
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+    <!-- DataTables JavaScript -->
+    <script src="{{ asset('bundles/enfermeria/js/jquery.tablesorter.js') }}"></script> 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#consultas").tablesorter();
+        }
+        );
+    </script> 
+{% endblock %}

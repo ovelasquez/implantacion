@@ -1,0 +1,583 @@
+{% extends '::base.html.twig' %}
+{% block _body %}  
+    <h2>Consulta del Paciente: <b>{{Paciente | title}}</h2></b> 
+<br>Fecha de la consulta:  <b>{{entity.fecha |date('d-m-Y')}}</b> </br> {% endblock %}
+{% block body %}
+    <br>
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+    <!-- Nav tabs -->
+    <ul class="nav nav-pills nav-justified">
+        <li class="active"><a href="#uno" data-toggle="tab">Paciente</a></li>
+        <li><a href="#seis" data-toggle="tab">Consulta</a></li>
+        <li><a href="#dos" data-toggle="tab">Signos Vitales </a></li>
+        <li><a href="#tres" data-toggle="tab">Medicamentos</a></li>
+        <li><a href="#cuatro" data-toggle="tab">Insumos</a></li>
+        <li><a href="#cinco" data-toggle="tab">Observaciones</a></li>
+    </ul>
+
+    <!-- Tab panes Datos del Paciente -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="uno">        
+            <div class="col-lg-12">
+                <hr>
+                <fieldset>
+                    <legend>Datos Personales del Paciente</legend> 
+                    <div class="row">                                
+                        <div class="col-lg-12">
+                            <div class="col-lg-12">
+
+                                <table class="table table-striped">                                                                     
+                                    <tr>                                            
+                                        <td>Paciente:</td>
+                                        <td><label id="iSelected" >{{Paciente | title}} </label></td>
+                                        <td>Cédula: </label></td>
+                                        <td> <label id="iSelected" >{{Paciente.datos.cedula | number_format(0,',','.')}} </label></td>
+                                        <td>Género: </td>
+                                        <td><label id="iSelected" >{{Paciente.genero | title}} </label> </td>
+                                    </tr>
+                                    <tr>                                            
+                                        <td>Fecha Nacimiento:</td>
+                                        <td> <label id="iSelected" >{{Paciente.fechaNacimiento|date('d-m-Y') }} </label></td>
+                                        <td> Procedencia: </td>
+                                        <td> <label id="iSelected" >{{Paciente.procedencia | title}} </label></td>
+                                        <td> {% if Paciente.tipo %}
+                                            Tipo de Paciente: 
+                                            {% endif %}</td>
+                                            <td> {% if Paciente.tipo %}
+                                                <label id="iSelected" >{{Paciente.tipo | title}} </label>
+                                                {% endif %}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{% if Paciente.pfg %}
+                                                    PFG: </label>
+                                                    {% endif %}</td>
+                                                    <td>{% if Paciente.pfg %}
+                                                        <label id="iSelected" >{{Paciente.pfg | title}} </label>
+                                                        {% endif %}</td>
+                                                        <td> </td>
+                                                        <td></td>
+                                                        <td> </td>
+                                                        <td></td>
+                                                    </tr>                                   
+                                                </table>
+
+                                                {# HISTORIAL DE CONSULTAS #}
+
+                                                </br>  </br>  </br>
+
+                                                <legend>Historia del Paciente</legend> 
+                                                
+                                                {% if ( historial|length > 1) %}     
+
+                                                <table id="consultas" class="table table-striped" >
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>                                                                
+                                                            <th>Procedencia</th>
+                                                            <th>Charla?</th>               
+                                                            <th>Egreso?</th>
+                                                            <th>Fecha</th>
+                                                            <th>Acciones</th> 
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for historia in historial %}   
+                                                            {% if ( historia.id != entity.id ) %}    
+                                                                <tr>
+                                                                    <td>{{ loop.index }}</td>                                                                               
+                                                                    <td>{{ historia.paciente.procedencia | title }}</td>                
+                                                                    <td>{% if historia.charla==1 %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>{% else %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>{% endif %}</td>                
+                                                                    <td>{% if historia.egreso==1 %}<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>{% else %}<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>{% endif %}</td>
+                                                                    <td>{% if historia.fecha %}{{ historia.fecha|date('d-m-Y H:i') }}{% endif %}</td>
+                                                                    <td> <a href="{{ path('consultas_edit', { 'id': historia.id }) }}">  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> </a></td>
+                                                                </tr>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                               {% else %}
+                                                   
+                                                   {{ "No posee historia" }}
+                                                   
+                                                   {% endif %}
+
+                                                {# FIN #}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="seis">        
+                            <div class="col-lg-12">
+                                <hr>
+                                <fieldset>                   
+                                    <div class="row">
+                                        <div class="col-lg-12">
+
+                                            <div class="radio">
+                                                <div class="row">
+
+                                                    <div class="col-lg-2">
+                                                        <div class="row">
+                                                            {{ form_label(edit_form.egreso) }}
+                                                            {{ form_errors(edit_form.egreso) }} 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        {{ form_widget(edit_form.egreso) }}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="radio">
+                                                <div class="row">
+                                                    <div class="col-lg-2">
+                                                        <div class="row">
+                                                            {{ form_label(edit_form.charla) }}
+                                                            {{ form_errors(edit_form.charla) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        {{ form_widget(edit_form.charla) }}
+                                                    </div>
+                                                </div>                
+                                            </div>                               
+                                            <div class="radio" id="referencia">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <div class="col-lg-2 control-label" required="required">
+                                                            {{ form_label(edit_form.referencia) }}
+                                                            {{ form_errors(edit_form.referencia) }}
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            {{ form_widget(edit_form.referencia) }}
+                                                        </div>
+                                                    </div>  
+                                                </div>
+                                            </div>     
+                                            <div class="radio" id="personal">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <div class="col-lg-2 control-label">
+                                                            {{ form_label(edit_form.personal) }}
+                                                            {{ form_errors(edit_form.personal) }}
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            {{ form_widget(edit_form.personal) }}
+                                                        </div>
+                                                    </div>  
+                                                </div>
+                                            </div>  
+
+
+                                        </div>                   
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div> 
+
+                        <div class="tab-pane" id="dos">
+                            <div class="col-lg-12">
+                                <hr>
+                                <fieldset>
+                                    <legend>Signos Vitales del Paciente</legend> 
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label required" for="cdi_enfermeriabundle_signosvitalessuministrados_nombre">Signo Vital
+                                        </label>
+                                        <div class="col-lg-6">
+                                            <select id="cdi_enfermeriabundle_signosvitalessuministrados_nombre" name="cdi_enfermeriabundle_signosvitalessuministrados[nombre]" class="form-control">
+                                                <option value="" selected="selected">Seleccione</option>
+                                                <option value="presion arterial">Presion Arterial (PA)</option>
+                                                <option value="frecuencia cardiaca">Frecuencia Cardíaca (FC)</option>
+                                                <option value="glicemia">Glicemia</option>
+                                                <option value="frecuencia respiratoria">Frecuencia Respiratoria (FR)</option>
+                                                <option value="peso">Peso</option>
+                                                <option value="talla">Talla</option>
+                                                <option value="temperatura">Temperatura</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label required" for="cdi_enfermeriabundle_signosvitalessuministrados_valor">Valor
+                                        </label>
+                                        <div class="col-lg-6">
+                                            <input type="text" id="cdi_enfermeriabundle_signosvitalessuministrados_valor" name="cdi_enfermeriabundle_signosvitalessuministrados[valor]"   class="form-control" placeholder="Valor del Signo Vital" />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label" for="cdi_enfermeriabundle_signosvitalessuministrados_historial">Historial
+                                        </label>
+                                        <div class="col-lg-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Nombre</th>
+                                                        <th>Valor</th>                                        
+                                                        <th>Fecha</th>
+                                                        <th>Suministrado</th>
+                                                </thead>
+                                                <tbody>
+                                                    {% for entity in SignosVitalesSuministrados %}
+                                                        <tr>
+                                                            <td>{{ loop.index }}</td>                                            
+                                                            <td>{{ entity.nombre | title }}</td>
+                                                            <td>{{ entity.valor }}</td>
+                                                            <td>{% if entity.fecha %}{{ entity.fecha|date('d-m-Y H:i:s') }}{% endif %}</td>
+                                                            <td>{{ entity.usuario }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane" id="tres">
+                            <div class="col-lg-12">
+                                <hr>
+                                <fieldset>
+                                    <legend>Medicamentos Suministrados</legend> 
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label required" for="cdi_enfermeriabundle_medicamentossuministrados_medicamento">Medicamento
+                                        </label>
+                                        <div class="col-lg-6">
+                                            <select id="cdi_enfermeriabundle_medicamentossuministrados_medicamento" name="cdi_enfermeriabundle_medicamentossuministrados[medicamento]"   class="form-control">
+                                                <option value="" selected="selected">Seleccione</option>
+                                                {% for medicamento in Medicamentos %}
+                                                    <option value="{{ medicamento.id  }}">{{  medicamento.principioActivo  }} - {{  medicamento.tipoMedicamento  }}</option>
+                                                {% endfor %}
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label required" for="cdi_enfermeriabundle_medicamentossuministrados_cantidad">Cantidad Suministrada
+                                        </label>
+                                        <div class="col-lg-6">
+                                            <input type="number" id="cdi_enfermeriabundle_medicamentossuministrados_cantidad" name="cdi_enfermeriabundle_medicamentossuministrados[cantidad]"   class="form-control" placeholder="Cantidad Suministrada" />                            
+                                            <div id="Info"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label required" required="1" for="cdi_enfermeriabundle_medicamentossuministrados_viaAdministracion">Via de Administración
+                                        </label>
+                                        <div class="col-lg-6">
+                                            <select id="cdi_enfermeriabundle_medicamentossuministrados_viaAdministracion" name="cdi_enfermeriabundle_medicamentossuministrados[viaAdministracion]"   class="form-control">
+                                                <option value="" selected="selected">Seleccione</option>
+                                                <option value="endovenosa">Endovenosa</option>
+                                                <option value="oral">Oral</option>
+                                                <option value="sublingual">Sublingual</option>
+                                                <option value="intramuscular">Intramuscular</option>
+                                                <option value="intradérmica">Intradérmica</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label" for="cdi_enfermeriabundle_medicamentossuministrados_historial">Historial
+                                        </label>
+                                        <div class="col-lg-12">
+                                            <table  class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Nombre</th>
+                                                        <th>Cantidad</th>
+                                                        <th>Via administracion</th>
+                                                        <th>Fecha</th>
+                                                        <th>Suministrado</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for entity in MedicamentosSuministrados %}
+                                                        <tr>
+                                                            <td>{{ loop.index  }}</td>
+                                                            <td>{{ entity.medicamento }}</td>
+                                                            <td>{{ entity.cantidad }}</td>
+                                                            <td>{{ entity.viaAdministracion | title }}</td>
+                                                            <td>{% if entity.fecha %}{{ entity.fecha|date('d-m-Y H:i:s') }}{% endif %}</td>
+                                                            <td>{{ entity.usuario }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="cuatro">
+                            <div class="col-lg-12">
+                                <hr>
+                                <fieldset>
+                                    <legend>Insumos Suministrados</legend> 
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label required" for="cdi_enfermeriabundle_insumossuministrados_insumo">Insumos
+                                        </label>
+                                        <div class="col-lg-6">
+                                            <select id="cdi_enfermeriabundle_insumossuministrados_insumo" name="cdi_enfermeriabundle_insumossuministrados[insumo]"   class="form-control">
+                                                <option value="" selected="selected">Seleccione</option>
+                                                {% for insumo in insumos %}
+                                                    <option value="{{ insumo.id  }}">{{  insumo.nombre  }}</option>
+                                                {% endfor %}
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label required" for="cdi_enfermeriabundle_insumossuministrados_cantidad">Cantidad Suministrada
+                                        </label>
+                                        <div class="col-lg-6">
+                                            <input type="number" id="cdi_enfermeriabundle_insumossuministrados_cantidad" name="cdi_enfermeriabundle_insumossuministrados[cantidad]"   class="form-control" placeholder="Cantidad Suministrada" />
+                                            <div id="Info2"></div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label" for="cdi_enfermeriabundle_insumossuministrados_historial">Historial
+                                        </label>
+                                        <div class="col-lg-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Nombre</th>
+                                                        <th>Cantidad</th>
+                                                        <th>Fecha</th>
+                                                        <th>Suministrado</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for insumo in InsumosSuministrados %}
+                                                        <tr>
+                                                            <td>
+                                                                {{ loop.index }}
+                                                            </td>
+                                                            <td>{{ insumo.insumo }}</td>
+                                                            <td>{{ insumo.cantidad }}</td>
+                                                            <td>{% if insumo.fecha %}{{ insumo.fecha|date('d-m-Y H:i:s') }}{% endif %}</td>
+                                                            <td>{{ insumo.usuario }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="cinco">
+                            <div class="col-lg-12">
+                                <hr>
+                                <fieldset>
+                                    <legend>Observaciones</legend> 
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label required" for="cdi_enfermeriabundle_observacionessuministradas_tipo">Tipo de Observacion
+                                        </label>
+                                        <div class="col-lg-6">
+                                            <select id="cdi_enfermeriabundle_observacionessuministradas_tipo" name="cdi_enfermeriabundle_observacionessuministradas[tipo]"   class="form-control">
+                                                <option value="" selected="selected">Seleccione</option>
+                                                <option value="cura">Cura</option>
+                                                <option value="sutura">Sutura</option>
+                                                <option value="retiro de puntos">Retiro de Puntos</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label required" for="cdi_enfermeriabundle_observacionessuministradas_descripcion">Descripcion
+                                        </label>
+                                        <div class="col-lg-6">
+                                            <textarea id="cdi_enfermeriabundle_observacionessuministradas_descripcion" name="cdi_enfermeriabundle_observacionessuministradas[descripcion]" rows="3" class="form-control">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label" for="cdi_enfermeriabundle_observacionessuministradas_historial">Historial
+                                        </label>
+                                        <div class="col-lg-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Tipo</th>
+                                                        <th>Descripcion</th>
+                                                        <th>Fecha</th>
+                                                        <th>Suministrado</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for observacion in ObservacionesSuministradas %}
+                                                        <tr>
+                                                            <td>{{ loop.index }}</td>
+                                                            <td>{{ observacion.tipo | title }}</td>
+                                                            <td>{{ observacion.descripcion }}</td>
+                                                            <td>{% if observacion.fecha %}{{ entity.fecha|date('d-m-Y H:i:s') }}{% endif %}</td>
+                                                            <td>{{ observacion.usuario }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                    </div>
+                    <hr>
+                    </br>
+                    <div class="col-lg-12">                          
+
+                        <div class="col-lg-6">{{ form_end(edit_form) }} </div>  
+                        <div class="col-lg-6">{{ form(delete_form) }}</div>  
+
+
+                    </div>
+                    {% endblock %}
+                        {% block javascripts %}
+                            {{parent()}}
+                            <script>
+                                function displayVals() {
+                                    var signosvitales = $("#cdi_enfermeriabundle_signosvitalessuministrados_nombre").val();
+                                    var medicamentos = $("#cdi_enfermeriabundle_medicamentossuministrados_medicamento").val();
+                                    var insumos = $("#cdi_enfermeriabundle_insumossuministrados_insumo").val();
+                                    var observaciones = $("#cdi_enfermeriabundle_observacionessuministradas_tipo").val();
+                                    var referencia = $("#cdi_enfermeriabundle_consultas_referencia").val();
+                                    var personalreferido = $("#cdi_enfermeriabundle_consultas_personal").val();
+
+                                    if (referencia === "intrahospitalaria") {
+                                        $("#personal").css("display", "block"); // Mostrar el div personal
+                                        $("#cdi_enfermeriabundle_consultas_personal").attr("required", "required");
+                                    } else {
+                                        $("#personal").css("display", "none"); // Oculta el div personal
+                                        $("#cdi_enfermeriabundle_consultas_personal").removeAttr("required", "required");
+                                    }
+
+                                    if (signosvitales !== "") {
+                                        $("#cdi_enfermeriabundle_signosvitalessuministrados_valor").attr("required", "required");
+                                    } else {
+                                        $("#cdi_enfermeriabundle_signosvitalessuministrados_valor").removeAttr("required", "required");
+                                    }
+
+
+                                    if (medicamentos !== "") {
+                                        $("#cdi_enfermeriabundle_medicamentossuministrados_cantidad").attr("required", "required");
+                                        $("#cdi_enfermeriabundle_medicamentossuministrados_viaAdministracion").attr("required", "required");
+                                    } else {
+                                        $("#cdi_enfermeriabundle_medicamentossuministrados_cantidad").removeAttr("required", "required");
+                                        $("#cdi_enfermeriabundle_medicamentossuministrados_viaAdministracion").removeAttr("required", "required");
+                                    }
+
+
+                                    if (insumos !== "") {
+                                        $("#cdi_enfermeriabundle_insumossuministrados_cantidad").attr("required", "required");
+                                    } else {
+                                        $("#cdi_enfermeriabundle_insumossuministrados_cantidad").removeAttr("required", "required");
+                                    }
+
+
+                                    if (observaciones !== "") {
+                                        $("#cdi_enfermeriabundle_observacionessuministradas_descripcion").attr("required", "required");
+                                    } else {
+                                        $("#cdi_enfermeriabundle_observacionessuministradas_descripcion").removeAttr("required", "required");
+                                    }
+                                }
+                                $("#cdi_enfermeriabundle_medicamentossuministrados_medicamento").on("change", function () {
+                                    $("#cdi_enfermeriabundle_medicamentossuministrados_cantidad").val('');
+                                });
+
+                                $("#cdi_enfermeriabundle_medicamentossuministrados_cantidad").blur(function () {
+                                    if ($('#cdi_enfermeriabundle_medicamentossuministrados_medicamento').val() !== 'Seleccione') {
+                                        // Ajax
+                                        var id = $('#cdi_enfermeriabundle_medicamentossuministrados_medicamento').val();
+                                        var dataString = 'id=' + id;
+                                        var cantidadSuministrada = $('#cdi_enfermeriabundle_medicamentossuministrados_cantidad').val();
+                                        var mensaje = "<div class=" + "'alert alert-warning'>" +
+                                                "<a href='#'" + " class='close' data-dismiss='alert'>&times;</a>" +
+                                                "<strong>Cuidado!</strong> La cantidad disponible del medicamento es: "
+                                                ;
+                                        $.ajax
+                                                ({
+                                                    type: "POST",
+                                                    url: "{{ path ('ajaxmedicamentos') }}",
+                                                    data: dataString,
+                                                    cache: false,
+                                                    beforeSend: function () {
+                                                        $('#Info').html('<img src="{{ asset('bundles/enfermeria/imagenes/loader.gif')}}" alt="" />').fadeOut(1000);
+                                                    },
+                                                    success: function (html)
+                                                    {
+                                                        disponible = parseInt(html);
+                                                        if (cantidadSuministrada > disponible) {
+                                                            $('#Info').fadeIn(1000).html(mensaje + html + "</div>");
+                                                            $('#cdi_enfermeriabundle_medicamentossuministrados_cantidad').val("");
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                });
+                                $("#cdi_enfermeriabundle_insumossuministrados_insumo").on("change", function () {
+                                    $("#cdi_enfermeriabundle_insumossuministrados_cantidad").val('');
+                                });
+                                $("#cdi_enfermeriabundle_insumossuministrados_cantidad").blur(function () {
+                                    if ($('#cdi_enfermeriabundle_insumossuministrados_insumo').val() !== 'Seleccione') {
+                                        // Ajax
+                                        var id = $('#cdi_enfermeriabundle_insumossuministrados_insumo').val();
+                                        var dataString = 'id=' + id;
+                                        var cantidad = $('#cdi_enfermeriabundle_insumossuministrados_cantidad').val();
+                                        var mensaje = "<div class=" + "'alert alert-warning'>" +
+                                                "<a href='#'" + " class='close' data-dismiss='alert'>&times;</a>" +
+                                                "<strong>Cuidado!</strong> La cantidad disponible del insumo es: "
+                                                ;
+                                        $.ajax
+                                                ({
+                                                    type: "POST",
+                                                    url: "{{ path ('ajaxinsumos') }}",
+                                                    data: dataString,
+                                                    cache: false,
+                                                    beforeSend: function () {
+                                                        $('#Info2').html('<img src="{{ asset('bundles/enfermeria/imagenes/loader.gif')}}" alt="" />').fadeOut(1000);
+                                                    },
+                                                    success: function (html)
+                                                    {
+                                                        disponible = parseInt(html);
+                                                        if (cantidad > disponible) {
+                                                            $('#Info2').fadeIn(1000).html(mensaje + html + "</div>");
+                                                            $('#cdi_enfermeriabundle_insumossuministrados_cantidad').val("");
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                });
+                                $("select").change(displayVals);
+                                $(document).ready(function () {
+                                    var _referencia = $("#cdi_enfermeriabundle_consultas_referencia").val();
+                                    var _medicamentos = $("#cdi_enfermeriabundle_medicamentossuministrados_medicamento").val();
+
+                                    if (_referencia !== "intrahospitalaria")
+                                    {
+                                        $("#personal").css("display", "none"); // Oculta el div personal
+                                        $("#cdi_enfermeriabundle_consultas_personal").removeAttr("required"); //Quita el atributo requerido
+                                    }
+                                    else {
+                                        $("#personal").css("display", "block"); // Mostrar el div personal
+                                        $("#cdi_enfermeriabundle_consultas_personal").attr("required", "required"); //Agrega el atributo requerido                                        
+                                    }
+                                    $("#cdi_enfermeriabundle_observacionessuministradas_descripcion").val("");
+                                });
+                            </script>
+                        {% endblock %}

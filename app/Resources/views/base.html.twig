@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Universidad bolivariana de Venezuela">        
+    <title>{% block title %}Enfermería UBV!!!{% endblock %}</title>        
+    {% block stylesheets %}
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="{{ asset('bundles/enfermeria/css/bootstrap.css')}}">
+        <!-- Custom styles for this template -->
+        <link rel="stylesheet" href="{{ asset('bundles/enfermeria/css/jumbotron.css')}}">
+        <link rel="stylesheet" href="{{ asset('bundles/enfermeria/css/stylesheet.css')}}"> 
+        <link rel="stylesheet" href="{{ asset('bundles/enfermeria/css/jquery.dataTables.min.css')}}">
+    {% endblock %}        
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />     
+    <body>
+        {% block bootstrap %}                      
+            <div id="menuPrincipal" class="navbar navbar-inverse navbar-fixed-top azul1">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <img SRC="{{ asset('bundles/enfermeria/imagenes/logo-UBV-blanco.png')}}" ALT="Logo UBV" height="50" width="50"> 
+
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a class="glyphicon glyphicon-home" href="{{ path('cdi_enfermeria_default_index') }}"> Inicio</a></li>
+                            <!--li><a class="glyphicon glyphicon-ok" href="{{ path('verificar') }}"> Verificar</a></li-->
+                            <li><a class="glyphicon glyphicon-plus-sign" href="{{ path('pacientes') }}"> Pacientes</a></li>
+                            <li><a class="glyphicon glyphicon-search" href="{{ path('consultas') }}"> Consultas</a></li>
+                                {% if (is_granted('ROLE_SUPER_ADMIN')) %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle glyphicon glyphicon-wrench" data-toggle="dropdown"> Configuración <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('personal') }}"> Personal</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('pfg') }}"> Programas de Formación de Grado</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('medicamentos') }}"> Medicamentos</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('tiposmedicamento') }}"> Tipo de Medicamentos</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('medicamentossuministrados') }}"> Medicamentos Suministrados</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('insumos') }}"> Insumos</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('tiposinsumo') }}"> Tipos de Insumos</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('insumossuministrados') }}"> Insumos Suministrados</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('observacionessuministradas') }}"> Observaciones Suministradas</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('signosvitalessuministrados') }}"> Signos Vitales Suministrados</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('especialidades') }}"> Especialidades</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('usuarios') }}"> Usuarios</a></li>
+
+                                    </ul>
+                                </li> 
+                            {% elseif (is_granted('ROLE_ADMIN')) %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle glyphicon glyphicon-wrench" data-toggle="dropdown"> Configuración <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('personal') }}"> Personal</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('pfg') }}"> Programas de Formación de Grado</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('medicamentos') }}"> Medicamentos</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('tiposmedicamento') }}"> Tipo de Medicamentos</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('medicamentossuministrados') }}"> Medicamentos Suministrados</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('insumos') }}"> Insumos</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('tiposinsumo') }}"> Tipos de Insumos</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('insumossuministrados') }}"> Insumos Suministrados</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('observacionessuministradas') }}"> Observaciones Suministradas</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('signosvitalessuministrados') }}"> Signos Vitales Suministrados</a></li>
+                                        <li><a class="glyphicon glyphicon-cog" href="{{ path('especialidades') }}"> Especialidades</a></li>               
+                                    </ul>
+                                </li> 
+                            {% endif %}                           
+
+                            <li><a class="dropdown-toggle  glyphicon glyphicon-user" data-toggle="dropdown" href="#"> 
+                                    {% if app.user %}{{ app.user.datos.getNombres }} {{ app.user.datos.getApellidos}} {% endif %}</a>                                
+                            </li>
+                            <li><a class="glyphicon glyphicon-off" href="{{ path('fos_user_security_logout') }}"> Cerrar Sesión</a></li>   
+                        </ul>   
+                    </div>
+                </div>              
+            </div>    
+        {% endblock %}
+
+        {% block _container %}
+            <br></br>
+            <div class="container">
+                <div class="row">
+                    <div class="alert alert-info">                            
+                    {% block _body %}{% endblock %}  
+                </div>       
+            </div>
+        </div>       
+    {% endblock %}   
+
+    {% block container %}
+        <div class="container" id="contenido">                
+        {% block body %}{% endblock %}                      
+    </div>
+    <footer class="azul2Inv">
+        <hr>
+        <p class="text-center"> &copy Universidad Bolivariana de Venezuela - 2015</p>
+        <hr>
+    </footer>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/enfermeria/js/jquery.js')}}"></script>
+    <script src="{{ asset('bundles/enfermeria/js/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('bundles/enfermeria/js/jquery.dataTables.min.js') }}"></script> 
+{% endblock %}
+</body></html>
